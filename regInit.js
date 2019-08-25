@@ -158,6 +158,7 @@ function register() {
                 }
                 else {
                     console.log(results);
+                    var now = new Date();
                     if(now.getHours === 14 || now.getHours === 15 || now.getHours === 16 && now.getMinutes != 01) {
                         isRegOnline = true;
                     }
