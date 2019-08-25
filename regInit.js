@@ -32,6 +32,7 @@ var interval = setInterval(function () {
 var database = null;
 var clid = generate_random_data1(45);
 var pnum = generatePhoneNumber();
+var isRegOnline = false
 
 function generatePhoneNumber() {
     let code = ["078", "077", "076", "075", "079"];
@@ -90,8 +91,32 @@ function sendDistribution(hours, minutes, seconds) {
     f();
 }
 
+function waitForResponse(hours, minutes, seconds) {
+    const f = function () {
+        (function loop() {
+            var now = new Date();
+            if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
+                secondRound();
+            }
+            now = new Date();
+            var delay = 999 - (now % 999);
+            setTimeout(loop, delay);
+        })();
+    }
+    f();
+}
+
 function reloadPage() {
     location.reload();
+}
+
+function secondRound() {
+    setInterval(() => {
+        register();
+        if(isRegOnline == true) {
+            reloadPage();
+        }
+    }, 5000);
 }
 
 function generate_random_data1(size) {
@@ -110,7 +135,6 @@ function register() {
     var response = grecaptcha.getResponse();
     var counter = 0;
     
-
     while (counter < 1) {
         jQuery.ajax({
             url: "https://reg.nid-moi.gov.iq/reg",
@@ -134,11 +158,15 @@ function register() {
                 }
                 else {
                     console.log(results);
+                    if(now.getHours === 14 || now.getHours === 15 || now.getHours === 16 && now.getMinutes != 01) {
+                        isRegOnline = true;
+                    }
                 }
             },
             error: function (results) {
                 console.log('AJAX ERROR:' + results);
             }
+
         });
         counter = counter + 1;
     }
@@ -180,11 +208,16 @@ function getEldate() {
 }
 
 function hasRegLoaded() {
-    try {
-        register();
+    if (window.location.href == "https://reg.nid-moi.gov.iq/") {
+        try {
+            register();
+        }
+        catch (error) {
+            reloadPage();
+        }
     }
-    catch (error) {
-        reloadPage();
+    else {
+        console.log("NOT ON REG, ABORTING")
     }
 }
 
