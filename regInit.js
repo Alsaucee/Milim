@@ -128,7 +128,7 @@ function waitForCaptcha() {
 
 function initiateSecondRound() {
     var now = new Date();
-    if (now.getHours === 14 || now.getHours === 15 || now.getHours === 16)  {
+    if (now.getHours() === 14 || now.getHours() === 15 || now.getHours() === 16)  {
         console.log("Second Round Ready!");
         waitforCaptcha();
     }
