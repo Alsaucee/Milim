@@ -227,7 +227,7 @@ function getEldate() {
 function hasRegLoaded() {
     if (window.location.href == "https://reg.nid-moi.gov.iq/") {
         try {
-            register();
+            register(1);
         }
         catch (error) {
             reloadPage();
