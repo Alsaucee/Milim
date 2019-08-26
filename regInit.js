@@ -149,11 +149,10 @@ function generate_random_data1(size) {
     return random_data.join('');
 }
 
-function register() {
+function register(count) {
     var response = grecaptcha.getResponse();
     var counter = 0;
-    
-    while (counter < 1) {
+    while (counter < count) {
         jQuery.ajax({
             url: "https://reg.nid-moi.gov.iq/reg",
             method: "post",
