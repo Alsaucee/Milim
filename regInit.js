@@ -7,7 +7,6 @@ var interval = setInterval(function () {
         clearInterval(interval);
         console.log('Essintial Scripts loaded');
         console.log('Starting execution..');
-        setupFirebase();
         refreshOnTime(13, 58, 02);
         registerOnTime(13, 59, 58);
         registerOnTime(14, 00, 00);
@@ -237,10 +236,4 @@ function hasRegLoaded() {
     else {
         console.log("NOT ON REG, ABORTING")
     }
-}
-
-function setupFirebase() {
-    firebase.initializeApp(firebaseConfig);
-    database = firebase.database();
-    console.log('Firebase is configed');
 }
