@@ -1,7 +1,9 @@
-
 const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
+
+var c = "";
+
 var firebaseConfig = {
     apiKey: "AIzaSyA-u_frYotDqet6gv_w56OUpf6BkcaPdTQ",
     authDomain: "automator-db.firebaseapp.com",
@@ -21,7 +23,9 @@ var interval = setInterval(function () {
         registerOnTime(14, 00, 05);
         registerOnTime(14, 00, 20);
         registerOnTime(14, 00, 45);
-        sendDistribution(14, 05, 00)
+        sendDistribution(14, 05, 00);
+        initiateSecondRound();
+        waitForResponse(14, 05, 05);
         sleep(5000).then(() => {
             hasRegLoaded();
         });
@@ -32,7 +36,9 @@ var interval = setInterval(function () {
 var database = null;
 var clid = generate_random_data1(45);
 var pnum = generatePhoneNumber();
-var isRegOnline = false
+var isRegOnline = false;
+var secondRound = false;
+var secondRoundEligible = true
 
 function generatePhoneNumber() {
     let code = ["078", "077", "076", "075", "079"];
@@ -91,12 +97,18 @@ function sendDistribution(hours, minutes, seconds) {
     f();
 }
 
+function reloadPage() {
+    location.reload();
+}
+
+
 function waitForResponse(hours, minutes, seconds) {
     const f = function () {
         (function loop() {
             var now = new Date();
-            if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
-                secondRound();
+            if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds && secondRoundEligible == true) {
+                secondRound = true;
+                waitForReconnection();
             }
             now = new Date();
             var delay = 999 - (now % 999);
@@ -106,17 +118,31 @@ function waitForResponse(hours, minutes, seconds) {
     f();
 }
 
-function reloadPage() {
-    location.reload();
-}
-
-function secondRound() {
+function waitForReconnection() {
     setInterval(() => {
         register();
-        if(isRegOnline == true) {
+        if (isRegOnline == true) {
             reloadPage();
         }
     }, 5000);
+}
+
+function waitForCaptcha() {
+    setInterval(() => {
+        if (grecaptcha.getResponse() != "") {
+            register();
+        }
+    }, 1000);
+}
+
+function initiateSecondRound() {
+    if (now.getHours === 14 || now.getHours === 15 || now.getHours === 16)  {
+        console.log("Second Round Ready!");
+        waitforCaptcha();
+    }
+    else {
+        console.log("First Round Ready!");
+    }
 }
 
 function generate_random_data1(size) {
@@ -155,11 +181,11 @@ function register() {
                     $.extend(data, results);
                     console.log(data);
                     addRecordToFirebase();
+                    secondRoundEligible = false
                 }
                 else {
                     console.log(results);
-                    var now = new Date();
-                    if(now.getHours === 14 || now.getHours === 15 || now.getHours === 16 && now.getMinutes != 01) {
+                    if (secondRound == true)  {
                         isRegOnline = true;
                     }
                 }
