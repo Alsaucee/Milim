@@ -62,7 +62,7 @@ function registerOnTime(hours, minutes, seconds) {
         (function loop() {
             var now = new Date();
             if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
-                register();
+                register(2);
             }
             now = new Date();
             var delay = 400 - (now % 400);
@@ -110,7 +110,7 @@ function waitForResponse(hours, minutes, seconds) {
 
 function waitForReconnection() {
     setInterval(() => {
-        register();
+        register(1);
         if (isRegOnline == true) {
             reloadPage();
         }
@@ -120,7 +120,7 @@ function waitForReconnection() {
 function waitForCaptcha() {
     setInterval(() => {
         if (grecaptcha.getResponse() != "") {
-            register();
+            register(1);
         }
     }, 1000);
 }
