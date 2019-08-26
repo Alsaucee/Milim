@@ -118,8 +118,9 @@ function waitForReconnection() {
 }
 
 function waitForCaptcha() {
-    setInterval(() => {
+    var interval2 = setInterval(function () {
         if (grecaptcha.getResponse() != "") {
+            clearInterval(interval2);
             register(1);
         }
     }, 1000);
