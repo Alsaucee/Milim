@@ -2,15 +2,6 @@ const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
 
-var c = "";
-
-var firebaseConfig = {
-    apiKey: "AIzaSyA-u_frYotDqet6gv_w56OUpf6BkcaPdTQ",
-    authDomain: "automator-db.firebaseapp.com",
-    databaseURL: "https://automator-db.firebaseio.com",
-    storageBucket: "automator-db.appspot.com"
-};
-
 var interval = setInterval(function () {
     if (document.readyState === 'complete') {
         clearInterval(interval);
