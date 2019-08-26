@@ -34,6 +34,7 @@ function generatePhoneNumber() {
     let code = ["078", "077", "076", "075", "079"];
     let pre = ["0", "1", "2", "3"];
     let pnum = code[getRandomInt(0, code.length - 1)] + pre[getRandomInt(0, pre.length - 1)] + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9);
+    return pnum;
 }
 
 function getRandomInt(min, max) {
