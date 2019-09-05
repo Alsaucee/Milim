@@ -8,7 +8,6 @@ var interval = setInterval(function () {
         console.log('Essintial Scripts loaded');
         console.log('Starting execution..');
         refreshOnTime(13, 58, 02);
-        registerOnTime(16, 00, 00, 15);
         registerOnTime(13, 59, 56, 15);
         registerOnTime(13, 59, 58, 15);
         registerOnTime(13, 59, 59, 15);
