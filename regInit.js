@@ -8,14 +8,14 @@ var interval = setInterval(function () {
         console.log('Essintial Scripts loaded');
         console.log('Starting execution..');
         refreshOnTime(13, 58, 02);
-        registerOnTime(13, 59, 58);
-        registerOnTime(14, 00, 00);
-        registerOnTime(14, 00, 05);
-        registerOnTime(14, 00, 20);
-        registerOnTime(14, 00, 45);
+        registerOnTime(13, 59, 56, 15);
+        registerOnTime(13, 59, 58, 15);
+        registerOnTime(13, 59, 59, 15);
+        registerOnTime(14, 00, 00, 10);
+        registerOnTime(14, 00, 05, 10);
+        registerOnTime(14, 00, 20, 5);
+        registerOnTime(14, 00, 45, 5);
         sendDistribution(14, 05, 00);
-        initiateSecondRound();
-        waitForResponse(14, 05, 05);
         sleep(5000).then(() => {
             hasRegLoaded();
         });
@@ -23,18 +23,14 @@ var interval = setInterval(function () {
     }
 }, 100);
 
-var database = null;
 var clid = generate_random_data1(45);
 var pnum = generatePhoneNumber();
 var isRegOnline = false;
-var secondRound = false;
-var secondRoundEligible = true
 
 function generatePhoneNumber() {
     let code = ["078", "077", "076", "075", "079"];
     let pre = ["0", "1", "2", "3"];
     let pnum = code[getRandomInt(0, code.length - 1)] + pre[getRandomInt(0, pre.length - 1)] + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9) + getRandomInt(0, 9);
-    return pnum;
 }
 
 function getRandomInt(min, max) {
@@ -58,12 +54,12 @@ function refreshOnTime(hours, minutes, seconds) {
     f();
 }
 
-function registerOnTime(hours, minutes, seconds) {
+function registerOnTime(hours, minutes, seconds, tries) {
     const f = function () {
         (function loop() {
             var now = new Date();
             if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
-                register(2);
+                register(tries);
             }
             now = new Date();
             var delay = 400 - (now % 400);
@@ -90,52 +86,6 @@ function sendDistribution(hours, minutes, seconds) {
 
 function reloadPage() {
     location.reload();
-}
-
-
-function waitForResponse(hours, minutes, seconds) {
-    const f = function () {
-        (function loop() {
-            var now = new Date();
-            if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds && secondRoundEligible == true) {
-                secondRound = true;
-                waitForReconnection();
-            }
-            now = new Date();
-            var delay = 999 - (now % 999);
-            setTimeout(loop, delay);
-        })();
-    }
-    f();
-}
-
-function waitForReconnection() {
-    setInterval(() => {
-        register(1);
-        if (isRegOnline == true) {
-            reloadPage();
-        }
-    }, 5000);
-}
-
-function waitForCaptcha() {
-    var interval2 = setInterval(function () {
-        if (grecaptcha.getResponse() != "") {
-            clearInterval(interval2);
-            register(1);
-        }
-    }, 1000);
-}
-
-function initiateSecondRound() {
-    var now = new Date();
-    if (now.getHours() === 14 || now.getHours() === 15 || now.getHours() === 16)  {
-        console.log("Second Round Ready!");
-        waitForCaptcha();
-    }
-    else {
-        console.log("First Round Ready!");
-    }
 }
 
 function generate_random_data1(size) {
@@ -177,9 +127,6 @@ function register(count) {
                 }
                 else {
                     console.log(results);
-                    if (secondRound == true)  {
-                        isRegOnline = true;
-                    }
                 }
             },
             error: function (results) {
