@@ -141,8 +141,10 @@ function register(count) {
                     console.log(results);
                 }
             },
-            error: function (results) {
-                console.log(results);
+            error: function(xhr, status, errorText) {
+                console.log(xhr);
+                console.log(status);
+                console.log(errorText);
             }
 
         });
