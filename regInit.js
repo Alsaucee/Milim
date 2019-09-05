@@ -15,11 +15,14 @@ var interval = setInterval(function () {
         registerOnTime(14, 00, 05, 10);
         registerOnTime(14, 00, 20, 5);
         registerOnTime(14, 00, 45, 5);
-        sendDistribution(14, 05, 00);
+        sendDistribution(14, 02, 30);
         sleep(5000).then(() => {
             hasRegLoaded();
         });
 
+        sleep(10000).then(()=> {
+            window.stop();
+        });
     }
 }, 100);
 
@@ -69,12 +72,19 @@ function registerOnTime(hours, minutes, seconds, tries) {
     f();
 }
 
+function stopExecution() {
+    
+}
+
 function sendDistribution(hours, minutes, seconds) {
     const f = function () {
         (function loop() {
             var now = new Date();
             if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
                 addOfficeToFirebase();
+                sleep(10000).then(()=> {
+                    throw new Error("Something went badly wrong!");
+                });
             }
             now = new Date();
             var delay = 999 - (now % 999);
