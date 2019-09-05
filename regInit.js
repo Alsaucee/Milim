@@ -17,10 +17,6 @@ var interval = setInterval(function () {
         sleep(5000).then(() => {
             hasRegLoaded();
         });
-
-        sleep(20000).then(()=> {
-            window.stop();
-        });
     }
 }, 100);
 
