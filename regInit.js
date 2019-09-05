@@ -21,7 +21,7 @@ var interval = setInterval(function () {
             hasRegLoaded();
         });
 
-        sleep(10000).then(()=> {
+        sleep(20000).then(()=> {
             window.stop();
         });
     }
