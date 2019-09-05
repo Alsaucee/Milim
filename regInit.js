@@ -141,7 +141,7 @@ function register(count) {
                 }
             },
             error: function (results) {
-                console.log('AJAX ERROR:' + results);
+                console.log(results);
             }
 
         });
