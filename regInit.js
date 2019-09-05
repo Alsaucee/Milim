@@ -8,14 +8,12 @@ var interval = setInterval(function () {
         console.log('Essintial Scripts loaded');
         console.log('Starting execution..');
         refreshOnTime(13, 58, 02);
-        registerOnTime(13, 59, 56, 15);
-        registerOnTime(13, 59, 58, 15);
-        registerOnTime(13, 59, 59, 15);
+        registerOnTime(13, 59, 56, 5);
+        registerOnTime(13, 59, 58, 5);
+        registerOnTime(13, 59, 59, 10);
         registerOnTime(14, 00, 00, 10);
-        registerOnTime(14, 00, 05, 10);
-        registerOnTime(14, 00, 20, 5);
-        registerOnTime(14, 00, 45, 5);
-        sendDistribution(14, 02, 30);
+        registerOnTime(14, 00, 05, 5);
+        sendDistribution(14, 02, 00);
         sleep(5000).then(() => {
             hasRegLoaded();
         });
@@ -66,7 +64,7 @@ function registerOnTime(hours, minutes, seconds, tries) {
                 register(tries);
             }
             now = new Date();
-            var delay = 400 - (now % 400);
+            var delay = 999 - (now % 999);
             setTimeout(loop, delay);
         })();
     }
@@ -84,7 +82,7 @@ function sendDistribution(hours, minutes, seconds) {
             if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
                 addOfficeToFirebase();
                 sleep(10000).then(()=> {
-                    throw new Error("Something went badly wrong!");
+                    throw new Error("Stopping Execution");
                 });
             }
             now = new Date();
