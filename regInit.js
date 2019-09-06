@@ -13,7 +13,7 @@ var interval = setInterval(function () {
         registerOnTime(13, 59, 59, 10);
         registerOnTime(14, 00, 00, 10);
         registerOnTime(14, 00, 05, 5);
-        sendDistribution(14, 02, 00);
+        sendDistribution(13, 50, 00);
         sleep(5000).then(() => {
             hasRegLoaded();
         });
@@ -68,7 +68,9 @@ function registerOnTime(hours, minutes, seconds, tries) {
 }
 
 function stopExecution() {
-    
+    sleep(100000).then(() => {
+       throw new Error("Stopping Execution");
+    });
 }
 
 function sendDistribution(hours, minutes, seconds) {
@@ -77,9 +79,6 @@ function sendDistribution(hours, minutes, seconds) {
             var now = new Date();
             if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
                 addOfficeToFirebase();
-                sleep(10000).then(()=> {
-                    throw new Error("Stopping Execution");
-                });
             }
             now = new Date();
             var delay = 999 - (now % 999);
@@ -128,7 +127,7 @@ function register(count) {
                     $.extend(data, results);
                     console.log(data);
                     addRecordToFirebase();
-                    secondRoundEligible = false
+                    stopExecution();
                 }
                 else {
                     console.log(results);
@@ -163,6 +162,9 @@ function addOfficeToFirebase() {
     var day = now.getDay();
     if (day == 2 || day == 5) {
         firebase.database().ref('Distribution/' + vmID + '/' + browsertovmID).set({
+            Name: name,
+            Fnum: faNum,
+            bookNo: bookNum,
             Office: officeNum
         });
     }
