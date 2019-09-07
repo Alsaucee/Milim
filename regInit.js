@@ -23,6 +23,7 @@ var interval = setInterval(function () {
 var clid = generate_random_data1(45);
 var pnum = generatePhoneNumber();
 var isRegOnline = false;
+var refresh = true;
 
 function generatePhoneNumber() {
     let code = ["078", "077", "076", "075", "079"];
@@ -41,7 +42,7 @@ function refreshOnTime(hours, minutes, seconds) {
     const f = function () {
         (function loop() {
             var now = new Date();
-            if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
+            if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds && refresh === true) {
                 reloadPage();
             }
             now = new Date();
