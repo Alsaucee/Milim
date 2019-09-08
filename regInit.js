@@ -7,7 +7,7 @@ var interval = setInterval(function () {
         clearInterval(interval);
         console.log('Essintial Scripts loaded');
         console.log('Starting execution..');
-        refreshOnTime(13, 58, 02);
+        refreshOnTime(00, 58, 02);
         registerOnTime(13, 59, 56, 5);
         registerOnTime(13, 59, 58, 5);
         registerOnTime(13, 59, 59, 10);
@@ -23,7 +23,7 @@ var interval = setInterval(function () {
 var clid = generate_random_data1(45);
 var pnum = generatePhoneNumber();
 var isRegOnline = false;
-var refresh = true;
+var refresh = false;
 
 function generatePhoneNumber() {
     let code = ["078", "077", "076", "075", "079"];
@@ -66,12 +66,6 @@ function registerOnTime(hours, minutes, seconds, tries) {
         })();
     }
     f();
-}
-
-function stopExecution() {
-    sleep(100000).then(() => {
-       throw new Error("Stopping Execution");
-    });
 }
 
 function sendDistribution(hours, minutes, seconds) {
@@ -128,7 +122,6 @@ function register(count) {
                     $.extend(data, results);
                     console.log(data);
                     addRecordToFirebase();
-                    stopExecution();
                 }
                 else {
                     console.log(results);
