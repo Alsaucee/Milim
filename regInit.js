@@ -13,7 +13,6 @@ var interval = setInterval(function () {
         registerOnTime(13, 59, 59, 10);
         registerOnTime(14, 00, 00, 10);
         registerOnTime(14, 00, 05, 5);
-        registerOnTime(17, 16, 56, 5);
         sendDistribution(13, 50, 00);
         sleep(5000).then(() => {
             hasRegLoaded();
