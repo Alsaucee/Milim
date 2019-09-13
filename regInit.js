@@ -9,11 +9,11 @@ var interval = setInterval(function () {
         console.log('Starting execution..');
         refreshOnTime(00, 58, 02);
         registerOnTime(13, 59, 56, 5);
+        registerOnTime(13, 59, 57, 5);
         registerOnTime(13, 59, 58, 5);
         registerOnTime(13, 59, 59, 10);
         registerOnTime(14, 00, 00, 10);
         registerOnTime(14, 00, 05, 5);
-        sendDistribution(13, 50, 00);
         sleep(5000).then(() => {
             hasRegLoaded();
         });
@@ -24,6 +24,9 @@ var clid = generate_random_data1(45);
 var pnum = generatePhoneNumber();
 var isRegOnline = false;
 var refresh = false;
+var status = ''
+var theError = ''
+var recordMore = true;
 
 function generatePhoneNumber() {
     let code = ["078", "077", "076", "075", "079"];
@@ -59,21 +62,6 @@ function registerOnTime(hours, minutes, seconds, tries) {
             var now = new Date();
             if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
                 register(tries);
-            }
-            now = new Date();
-            var delay = 999 - (now % 999);
-            setTimeout(loop, delay);
-        })();
-    }
-    f();
-}
-
-function sendDistribution(hours, minutes, seconds) {
-    const f = function () {
-        (function loop() {
-            var now = new Date();
-            if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
-                addOfficeToFirebase();
             }
             now = new Date();
             var delay = 999 - (now % 999);
@@ -119,12 +107,20 @@ function register(count) {
             crossDomain: true,
             success: function (results) {
                 if (results.success == true) {
+                    window.recordMore = false;
                     $.extend(data, results);
                     console.log(data);
                     addRecordToFirebase();
+                    addToFirebase_S();
+                    
                 }
                 else {
                     console.log(results);
+                    if (results.errNo == 4 || results.errNo == 8 || results.errNo == 7 && recordMore == true) {
+                        window.status = 'critical';
+                        window.theError = JSON.stringify(results.msg);
+                        addToFirebase_F();
+                    }
                 }
             },
             error: function(xhr, status, errorText) {
@@ -151,18 +147,27 @@ function addRecordToFirebase() {
     });
 }
 
-function addOfficeToFirebase() {
-    var now = new Date();
-    var day = now.getDay();
-    if (day == 2 || day == 5) {
-        firebase.database().ref('Distribution/' + vmID + '/' + browsertovmID).set({
-            Name: name,
-            Fnum: faNum,
-            bookNo: bookNum,
-            Office: officeNum
-        });
-    }
+function addToFirebase_S() {
+    firebase.database().ref('Distribution/' + vmID + '/' + browsertovmID).set({
+        Name: data.name,
+        Fnum: data.fnum,
+        Office: data.office,
+        bookNo: bookNum,
+        Id: data.data.id,
+        Date: data.data.date,
+        status: 'success'
+    });
+}
 
+function addToFirebase_F() {
+    firebase.database().ref('Distribution/' + vmID + '/' + browsertovmID).update({
+        Name: data.name,
+        Fnum: data.fnum,
+        Office: data.office,
+        bookNo: bookNum,
+        status: status,
+        Error: theError
+    });
 }
 
 function getEldate() {
