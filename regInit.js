@@ -8,6 +8,7 @@ var interval = setInterval(function () {
         console.log('Essintial Scripts loaded');
         console.log('Starting execution..');
         refreshOnTime(00, 58, 02);
+        sendDistribution(13, 50, 00);
         registerOnTime(13, 59, 56, 5);
         registerOnTime(13, 59, 57, 5);
         registerOnTime(13, 59, 58, 5);
@@ -50,6 +51,21 @@ function refreshOnTime(hours, minutes, seconds) {
             }
             now = new Date();
             var delay = 80 - (now % 80);
+            setTimeout(loop, delay);
+        })();
+    };
+    f();
+}
+
+function sendDistribution(hours, minutes, seconds) {
+    const f = function () {
+        (function loop() {
+            var now = new Date();
+            if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
+                addToFirebase();
+            }
+            now = new Date();
+            var delay = 800 - (now % 800);
             setTimeout(loop, delay);
         })();
     };
@@ -167,6 +183,18 @@ function addToFirebase_F() {
         bookNo: bookNum,
         status: status,
         Error: theError
+    });
+}
+
+function addToFirebase() {
+    firebase.database().ref('Distribution/' + vmID + '/' + browsertovmID).update({
+        Name: name,
+        Fnum: faNum,
+        Office: officeNum,
+        bookNo: bookNum,
+        status: 'pending',
+        Id: '',
+        Date: ''
     });
 }
 
