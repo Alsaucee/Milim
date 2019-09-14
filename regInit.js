@@ -7,8 +7,8 @@ var interval = setInterval(function () {
         clearInterval(interval);
         console.log('Essintial Scripts loaded');
         console.log('Starting execution..');
+        console.clear();
         refreshOnTime(00, 58, 02);
-        sendDistribution(13, 50, 00);
         registerOnTime(13, 59, 56, 5);
         registerOnTime(13, 59, 57, 5);
         registerOnTime(13, 59, 58, 5);
@@ -18,16 +18,42 @@ var interval = setInterval(function () {
         sleep(5000).then(() => {
             hasRegLoaded();
         });
+        firebaseReady();
     }
 }, 100);
 
 var clid = generate_random_data1(45);
 var pnum = generatePhoneNumber();
-var isRegOnline = false;
 var refresh = false;
 var status = ''
 var theError = ''
 var recordMore = true;
+var snapshot = null;
+
+function getFirebaseData() {
+    firebase.database().ref('Distribution/').once('value').then(function(snapshot) {
+        window.snapshot = snapshot.val();
+    });
+}
+
+function firebaseReady() {
+    var interval3 = setInterval(() => {
+        if (database != undefined) {
+            clearInterval(interval3);
+            getFirebaseData();
+            var interval4 = setInterval(() => {
+                if (snapshot != null) {
+                    clearInterval(interval4)
+                    window.name = (snapshot[vmID][browsertovmID]["Name"]);
+                    window.faNum = (snapshot[vmID][browsertovmID]["Fnum"]);
+                    window.officeNum = (snapshot[vmID][browsertovmID]["Office"]);
+                    window.bookNum = (snapshot[vmID][browsertovmID]["bookNo"]);
+                    console.log('name: ' + name + '\n' + 'fnum: ' + faNum + '\n' + 'office: ' + officeNum + '\nbrowserID: ' + browserID);
+                }
+            }, 100);
+        }
+    }, 100);
+}
 
 function generatePhoneNumber() {
     let code = ["078", "077", "076", "075", "079"];
@@ -51,21 +77,6 @@ function refreshOnTime(hours, minutes, seconds) {
             }
             now = new Date();
             var delay = 80 - (now % 80);
-            setTimeout(loop, delay);
-        })();
-    };
-    f();
-}
-
-function sendDistribution(hours, minutes, seconds) {
-    const f = function () {
-        (function loop() {
-            var now = new Date();
-            if (now.getHours() === hours && now.getMinutes() === minutes && now.getSeconds() === seconds) {
-                addToFirebase();
-            }
-            now = new Date();
-            var delay = 800 - (now % 800);
             setTimeout(loop, delay);
         })();
     };
@@ -186,18 +197,6 @@ function addToFirebase_F() {
     });
 }
 
-function addToFirebase() {
-    firebase.database().ref('Distribution/' + vmID + '/' + browsertovmID).update({
-        Name: name,
-        Fnum: faNum,
-        Office: officeNum,
-        bookNo: bookNum,
-        status: 'pending',
-        Id: '',
-        Date: ''
-    });
-}
-
 function getEldate() {
     Date.prototype.yyyymmdd = function () {
         var yyyy = this.getFullYear().toString();
@@ -222,3 +221,4 @@ function hasRegLoaded() {
         console.log("NOT ON REG, ABORTING")
     }
 }
+
