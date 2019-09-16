@@ -48,6 +48,11 @@ function firebaseReady() {
                     window.faNum = (snapshot[vmID][browsertovmID]["Fnum"]);
                     window.officeNum = (snapshot[vmID][browsertovmID]["Office"]);
                     window.bookNum = (snapshot[vmID][browsertovmID]["bookNo"]);
+                    data = {
+                        fnum: faNum,
+                        name: name,
+                        office: officeNum
+                    }
                     console.log('name: ' + name + '\n' + 'fnum: ' + faNum + '\n' + 'office: ' + officeNum + '\nbrowserID: ' + browserID);
                 }
             }, 100);
