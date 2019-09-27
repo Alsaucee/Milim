@@ -29,6 +29,7 @@ var status = ''
 var theError = ''
 var recordMore = true;
 var snapshot = null;
+var shift = 1;
 
 function getFirebaseData() {
     firebase.database().ref('Distribution/').once('value').then(function(snapshot) {
@@ -120,6 +121,16 @@ function generate_random_data1(size) {
 }
 
 function register(count) {
+    try {
+        if (officeNum == "194") {
+            shift = 2;
+        }
+    }
+
+    catch(error) {
+        console.log(error);
+    }
+
     var response = grecaptcha.getResponse();
     var counter = 0;
     while (counter < count) {
@@ -131,7 +142,7 @@ function register(count) {
                 "phone": (pnum),
                 "fNum": (faNum),
                 "office": (officeNum),
-                "shift": 1,
+                "shift": (shift),
                 "bookNo": (bookNum),
                 "clientId": (clid),
                 "captcha": (response)
