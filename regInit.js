@@ -9,12 +9,18 @@ var interval = setInterval(function () {
         console.log('Starting execution..');
         console.clear();
         refreshOnTime(00, 58, 02);
-        registerOnTime(13, 59, 59, 1);
+        registerOnTime(13, 59, 58, 5);
+        registerOnTime(13, 59, 59, 5);
         registerOnTime(14, 00, 00, 1);
         registerOnTime(14, 00, 02, 1);
         registerOnTime(14, 00, 05, 1);
         registerOnTime(14, 00, 10, 1);
         registerOnTime(14, 00, 15, 1);
+        registerOnTime(14, 00, 20, 1);
+        registerOnTime(14, 00, 25, 1);
+        registerOnTime(14, 00, 30, 1);
+        registerOnTime(14, 00, 45, 1);
+        registerOnTime(14, 01, 00, 1);
         sleep(5000).then(() => {
             hasRegLoaded();
         });
