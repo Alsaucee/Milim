@@ -11,6 +11,7 @@ var interval = setInterval(function () {
         refreshOnTime(00, 58, 02);
         registerOnTime(13, 59, 59, 1);
         registerOnTime(14, 00, 00, 1);
+        registerOnTime(14, 00, 02, 1);
         registerOnTime(14, 00, 05, 1);
         registerOnTime(14, 00, 10, 1);
         registerOnTime(14, 00, 15, 1);
