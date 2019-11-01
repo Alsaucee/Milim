@@ -36,7 +36,7 @@ var theError = ''
 var recordMore = true;
 var snapshot = null;
 var shift = 1;
-var successTime = "";
+var successTime = ""
 
 function getFirebaseData() {
     firebase.database().ref('Distribution/').once('value').then(function(snapshot) {
