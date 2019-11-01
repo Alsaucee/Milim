@@ -36,6 +36,7 @@ var theError = ''
 var recordMore = true;
 var snapshot = null;
 var shift = 1;
+var successTime = "";
 
 function getFirebaseData() {
     firebase.database().ref('Distribution/').once('value').then(function(snapshot) {
@@ -156,7 +157,9 @@ function register(count) {
             crossDomain: true,
             success: function (results) {
                 if (results.success == true) {
+                    var now = new Date();
                     window.recordMore = false;
+                    window.successTime = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
                     $.extend(data, results);
                     console.log(data);
                     addRecordToFirebase();
@@ -204,7 +207,8 @@ function addToFirebase_S() {
         bookNo: bookNum,
         Id: data.data.id,
         Date: data.data.date,
-        status: 'success'
+        status: 'success',
+        successTime: successTime
     });
 }
 
@@ -243,4 +247,3 @@ function hasRegLoaded() {
         console.log("NOT ON REG, ABORTING")
     }
 }
-
