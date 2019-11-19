@@ -9,6 +9,9 @@ var interval = setInterval(function () {
         console.log('Starting execution..');
         console.clear();
         refreshOnTime(00, 58, 02);
+        registerOnTime(13, 59, 51, 1);
+        registerOnTime(13, 59, 52, 1);
+        registerOnTime(13, 59, 53, 1);
         registerOnTime(13, 59, 54, 1);
         registerOnTime(13, 59, 55, 1);
         registerOnTime(13, 59, 56, 5);
