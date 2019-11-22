@@ -41,15 +41,21 @@ var shift = 1;
 var successTime = "";
 
 function statusRed() {
-  $(".captchaButton").click();
-  var redBooking = setInterval(function() {
-    if (grecaptcha.getResponse() != "") {
-      sleep(5000).then(() => {
-        register(1);
-        clearInterval(redBooking);
-      });
-    }
-  }, 1000);
+  var now = new Date();
+  if (
+    (now.getHours() == 14 && now.getMinutes() >= 15) ||
+    now.getHours() >= 15
+  ) {
+    $(".captchaButton").click();
+    var redBooking = setInterval(function() {
+      if (grecaptcha.getResponse() != "") {
+        sleep(5000).then(() => {
+          register(1);
+          clearInterval(redBooking);
+        });
+      }
+    }, 1000);
+  }
 }
 
 function getFirebaseData() {
