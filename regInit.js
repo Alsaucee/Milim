@@ -42,7 +42,7 @@ var successTime = "";
 
 function statusRed() {
   $(".captchaButton").click();
-  var redBooking = interval(() => {
+  var redBooking = setInterval(function() {
     if (grecaptcha.getResponse() != "") {
       sleep(5000).then(() => {
         register(1);
