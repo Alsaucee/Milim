@@ -10,9 +10,9 @@ var interval = setInterval(function () {
         console.clear();
         refreshOnTime(00, 58, 02);
         registerOnTime(13, 59, 56, 1);
-        registerOnTime(13, 59, 57, 5);
+        registerOnTime(13, 59, 57, 1);
         registerOnTime(13, 59, 58, 1);
-        registerOnTime(13, 59, 59, 5);
+        registerOnTime(13, 59, 59, 1);
         registerOnTime(14, 00, 00, 1);
         registerOnTime(14, 00, 02, 1);
         registerOnTime(14, 00, 05, 1);
