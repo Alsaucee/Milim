@@ -253,6 +253,7 @@ function lateRegister(count) {
   var counter = 0;
   while (counter < count) {
     jQuery.ajax({
+      timeout: 10000,
       url: "https://reg.nid-moi.gov.iq/reg",
       method: "post",
       data: {
