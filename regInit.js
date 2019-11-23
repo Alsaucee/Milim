@@ -8,6 +8,7 @@ var interval = setInterval(function() {
     console.log("Essintial Scripts loaded");
     console.log("Starting execution..");
     console.clear();
+    initWait();
     refreshOnTime(00, 58, 02);
     registerOnTime(13, 59, 56, 1);
     registerOnTime(13, 59, 57, 1);
@@ -26,7 +27,6 @@ var interval = setInterval(function() {
       hasRegLoaded();
     });
     firebaseReady();
-    statusRed();
   }
 }, 100);
 
@@ -35,27 +35,65 @@ var pnum = generatePhoneNumber();
 var refresh = false;
 var status = "";
 var theError = "";
+var lateReg = false;
 var recordMore = true;
 var snapshot = null;
 var shift = 1;
 var successTime = "";
 
+function initWait() {
+  var ee = setInterval(function() {
+    var now = new Date();
+    if (
+      (now.getHours() == 14 && now.getMinutes() >= 15) ||
+      now.getHours() >= 15
+    ) {
+      waitForReg();
+      clearInterval(ee);
+    }
+  }, 10000);
+}
+
+function waitForReg() {
+  var redInterval = setInterval(function() {
+    try {
+      lateRegister(1);
+      sleep(10000).then(() => {
+        if (lateReg == true) {
+          statusRed();
+          clearInterval(redInterval);
+        }
+      });
+    } catch (error) {
+      console.log("Not Online, Trying again");
+    }
+  }, 10000);
+}
+
 function statusRed() {
-  var now = new Date();
-  if (
-    (now.getHours() == 14 && now.getMinutes() >= 15) ||
-    now.getHours() >= 15
-  ) {
-    $(".captchaButton").click();
-    var redBooking = setInterval(function() {
-      if (grecaptcha.getResponse() != "") {
-        sleep(5000).then(() => {
-          register(1);
-          clearInterval(redBooking);
-        });
-      }
-    }, 1000);
+  if (lateReg == true) {
+    var now = new Date();
+    if (
+      (now.getHours() == 14 && now.getMinutes() >= 15) ||
+      now.getHours() >= 15
+    ) {
+      $(".captchaButton").click();
+      var redBooking = setInterval(function() {
+        if (grecaptcha.getResponse() != "") {
+          sleep(5000).then(() => {
+            register(1);
+            clearInterval(redBooking);
+          });
+          sleep(20000).then(() => {
+            if (recordMore == true) {
+              waitForReg();
+            }
+          });
+        }
+      }, 1000);
+    }
   }
+  var now = new Date();
 }
 
 function getFirebaseData() {
@@ -178,6 +216,69 @@ function generate_random_data1(size) {
   }
 
   return random_data.join("");
+}
+
+function lateRegister(count) {
+  try {
+    if (officeNum == "194") {
+      shift = 2;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  var response = grecaptcha.getResponse();
+  var counter = 0;
+  while (counter < count) {
+    jQuery.ajax({
+      url: "https://reg.nid-moi.gov.iq/reg",
+      method: "post",
+      data: {
+        name: name,
+        phone: pnum,
+        fNum: faNum,
+        office: officeNum,
+        shift: shift,
+        bookNo: bookNum,
+        clientId: clid,
+        captcha: response
+      },
+      crossDomain: true,
+      success: function(results) {
+        if (results.success == true) {
+          window.lateReg = true;
+          var now = new Date();
+          window.recordMore = false;
+          window.successTime =
+            now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+          $.extend(data, results);
+          console.log(data);
+          addRecordToFirebase();
+          addToFirebase_S();
+        } else {
+          console.log(results);
+          if (
+            results.errNo == 4 ||
+            results.errNo == 8 ||
+            (results.errNo == 7 && recordMore == true)
+          ) {
+            window.recordMore = false;
+            window.status = "critical";
+            window.theError = JSON.stringify(results.msg);
+            addToFirebase_F();
+          } else if (results.errNo == 2) {
+            window.recordMore = false;
+          }
+        }
+      },
+      error: function(xhr, status, errorText) {
+        console.log(xhr);
+        console.log(status);
+        console.log(errorText);
+      }
+    });
+    counter = counter + 1;
+  }
 }
 
 function register(count) {
