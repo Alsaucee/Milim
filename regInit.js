@@ -35,6 +35,7 @@ var pnum = generatePhoneNumber();
 var refresh = false;
 var status = "";
 var theError = "";
+var waitReg = true;
 var lateReg = false;
 var recordMore = true;
 var snapshot = null;
@@ -42,6 +43,7 @@ var shift = 1;
 var successTime = "";
 
 function initWait() {
+  console.log("INIT WAIT INIT");
   var ee = setInterval(function() {
     var now = new Date();
     if (
@@ -55,28 +57,38 @@ function initWait() {
 }
 
 function waitForReg() {
-  var redInterval = setInterval(function() {
-    try {
-      lateRegister(1);
-      sleep(10000).then(() => {
-        if (lateReg == true) {
-          statusRed();
-          clearInterval(redInterval);
-        }
-      });
-    } catch (error) {
-      console.log("Not Online, Trying again");
-    }
-  }, 10000);
+  if (waitReg == true) {
+    console.log("WAIT FOR REG INITIATED");
+    window.waitReg = false;
+    var redInterval = setInterval(function() {
+      try {
+        lateRegister(1);
+        sleep(10000).then(() => {
+          if (lateReg == true) {
+            statusRed();
+            sleep(5000).then(() => {
+              window.lateReg = false;
+              window.waitReg = true;
+            });
+            clearInterval(redInterval);
+          }
+        });
+      } catch (error) {
+        console.log("Not Online, Trying again");
+      }
+    }, 15000);
+  }
 }
 
 function statusRed() {
+  console.log("RED STATUS INIT");
   if (lateReg == true) {
     var now = new Date();
     if (
       (now.getHours() == 14 && now.getMinutes() >= 15) ||
       now.getHours() >= 15
     ) {
+      console.log("STARTED SOLVING CAPTCHA");
       $(".captchaButton").click();
       var redBooking = setInterval(function() {
         if (grecaptcha.getResponse() != "") {
@@ -86,6 +98,7 @@ function statusRed() {
           });
           sleep(20000).then(() => {
             if (recordMore == true) {
+              resetCaptcha();
               waitForReg();
             }
           });
@@ -93,7 +106,12 @@ function statusRed() {
       }, 1000);
     }
   }
-  var now = new Date();
+}
+
+function resetCaptcha() {
+  if (grecaptcha.getResponse() != "") {
+    grecaptcha.reset();
+  }
 }
 
 function getFirebaseData() {
@@ -118,6 +136,10 @@ function firebaseReady() {
           window.faNum = snapshot[vmID][browsertovmID]["Fnum"];
           window.officeNum = snapshot[vmID][browsertovmID]["Office"];
           window.bookNum = snapshot[vmID][browsertovmID]["bookNo"];
+          var status = snapshot[vmID][browsertovmID]["status"];
+          if (status == "success") {
+            window.recordMore = false;
+          }
           data = {
             fnum: faNum,
             name: name,
