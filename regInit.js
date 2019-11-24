@@ -11,6 +11,7 @@ var interval = setInterval(function() {
     initWait();
     refreshOnTime(00, 58, 02);
     registerOnTime(13, 59, 56, 1);
+    registerOnTime(13, 59, 57, 1);
     registerOnTime(13, 59, 58, 1);
     registerOnTime(13, 59, 59, 1);
     registerOnTime(14, 00, 00, 1);
@@ -349,6 +350,8 @@ function register(count) {
             window.status = "critical";
             window.theError = JSON.stringify(results.msg);
             addToFirebase_F();
+          } else if (results.errNo == 2) {
+            window.recordMore = false;
           }
         }
       },
