@@ -8,6 +8,7 @@ var interval = setInterval(function() {
     console.log("Essintial Scripts loaded");
     console.log("Starting execution..");
     console.clear();
+    statusRed();
     refreshOnTime(00, 58, 02);
     registerOnTime(13, 59, 56, 1);
     registerOnTime(13, 59, 57, 1);
@@ -41,69 +42,22 @@ var snapshot = null;
 var shift = 1;
 var successTime = "";
 
-function initWait() {
-  console.log("INIT WAIT INIT");
-  var ee = setInterval(function() {
-    var now = new Date();
-    if (
-      (now.getHours() == 14 && now.getMinutes() >= 15) ||
-      now.getHours() >= 15
-    ) {
-      waitForReg();
-      clearInterval(ee);
-    }
-  }, 10000);
-}
-
-function waitForReg() {
-  if (waitReg == true) {
-    console.log("WAIT FOR REG INITIATED");
-    window.waitReg = false;
-    var redInterval = setInterval(function() {
-      try {
-        lateRegister(1);
-        sleep(10000).then(() => {
-          if (lateReg == true) {
-            statusRed();
-            sleep(5000).then(() => {
-              window.lateReg = false;
-              window.waitReg = true;
-            });
-            clearInterval(redInterval);
-          }
-        });
-      } catch (error) {
-        console.log("Not Online, Trying again");
-      }
-    }, 15000);
-  }
-}
-
 function statusRed() {
   console.log("RED STATUS INIT");
-  if (lateReg == true) {
-    var now = new Date();
-    if (
-      (now.getHours() == 14 && now.getMinutes() >= 15) ||
-      now.getHours() >= 15
-    ) {
-      console.log("STARTED SOLVING CAPTCHA");
-      $(".captchaButton").click();
-      var redBooking = setInterval(function() {
-        if (grecaptcha.getResponse() != "") {
-          sleep(5000).then(() => {
-            register(1);
-            clearInterval(redBooking);
-          });
-          sleep(20000).then(() => {
-            if (recordMore == true) {
-              resetCaptcha();
-              waitForReg();
-            }
-          });
-        }
-      }, 1000);
-    }
+  if (
+    (now.getHours() == 14 && now.getMinutes() >= 15) ||
+    now.getHours() >= 15
+  ) {
+    console.log("STARTED SOLVING CAPTCHA");
+    $(".captchaButton").click();
+    var redBooking = setInterval(function() {
+      if (grecaptcha.getResponse() != "") {
+        sleep(5000).then(() => {
+          register(1);
+          clearInterval(redBooking);
+        });
+      }
+    }, 1000);
   }
 }
 
