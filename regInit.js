@@ -8,7 +8,6 @@ var interval = setInterval(function() {
     console.log("Essintial Scripts loaded");
     console.log("Starting execution..");
     console.clear();
-    initWait();
     refreshOnTime(00, 58, 02);
     registerOnTime(13, 59, 56, 1);
     registerOnTime(13, 59, 57, 1);
@@ -137,7 +136,7 @@ function firebaseReady() {
           window.officeNum = snapshot[vmID][browsertovmID]["Office"];
           window.bookNum = snapshot[vmID][browsertovmID]["bookNo"];
           var status = snapshot[vmID][browsertovmID]["status"];
-          if (status == "success") {
+          if (status == "success" || status == "critical") {
             window.recordMore = false;
           }
           data = {
@@ -348,6 +347,7 @@ function register(count) {
             (results.errNo == 7 && recordMore == true)
           ) {
             window.status = "critical";
+            window.recordMore = false;
             window.theError = JSON.stringify(results.msg);
             addToFirebase_F();
           } else if (results.errNo == 2) {
