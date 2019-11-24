@@ -251,7 +251,7 @@ function lateRegister(count) {
 
   var response = grecaptcha.getResponse();
   var counter = 0;
-  while (counter < count) {
+  while (counter < count && recordMore == true) {
     jQuery.ajax({
       timeout: 10000,
       url: "https://reg.nid-moi.gov.iq/reg",
@@ -315,7 +315,7 @@ function register(count) {
 
   var response = grecaptcha.getResponse();
   var counter = 0;
-  while (counter < count) {
+  while (counter < count && recordMore == true) {
     jQuery.ajax({
       url: "https://reg.nid-moi.gov.iq/reg",
       method: "post",
