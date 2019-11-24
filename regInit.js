@@ -44,6 +44,7 @@ var successTime = "";
 
 function statusRed() {
   console.log("RED STATUS INIT");
+  var now = new Date();
   if (
     (now.getHours() == 14 && now.getMinutes() >= 15) ||
     now.getHours() >= 15
