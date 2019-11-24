@@ -10,19 +10,16 @@ var interval = setInterval(function() {
     console.clear();
     statusRed();
     refreshOnTime(00, 58, 02);
-    registerOnTime(13, 59, 56, 1);
-    registerOnTime(13, 59, 57, 1);
-    registerOnTime(13, 59, 58, 1);
-    registerOnTime(13, 59, 59, 1);
+    registerOnTime(13, 59, 57, 5);
+    registerOnTime(13, 59, 58, 10);
+    registerOnTime(13, 59, 59, 5);
     registerOnTime(14, 00, 00, 1);
     registerOnTime(14, 00, 02, 1);
     registerOnTime(14, 00, 05, 1);
     registerOnTime(14, 00, 08, 1);
-    registerOnTime(14, 00, 10, 1);
-    registerOnTime(14, 00, 15, 1);
+    registerOnTime(14, 00, 12, 1);
     registerOnTime(14, 00, 25, 1);
-    registerOnTime(14, 00, 35, 1);
-    registerOnTime(14, 00, 45, 1);
+    registerOnTime(14, 00, 40, 1);
     sleep(5000).then(() => {
       hasRegLoaded();
     });
