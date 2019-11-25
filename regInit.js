@@ -10,6 +10,7 @@ var interval = setInterval(function() {
     console.clear();
     statusRed();
     refreshOnTime(00, 58, 02);
+    registerOnTime(13, 59, 54, 5);
     registerOnTime(13, 59, 56, 5);
     registerOnTime(13, 59, 57, 5);
     registerOnTime(13, 59, 58, 5);
