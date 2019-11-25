@@ -29,6 +29,7 @@ var pnum = generatePhoneNumber();
 var refresh = false;
 var status = "";
 var theError = "";
+var red = true;
 var waitReg = true;
 var lateReg = false;
 var recordMore = true;
@@ -41,8 +42,9 @@ function statusRed() {
   var now = new Date();
   if (
     (now.getHours() == 14 && now.getMinutes() >= 15) ||
-    now.getHours() >= 15
+    now.getHours() >= 15 && red == true
   ) {
+    window.red = false;
     console.log("STARTED SOLVING CAPTCHA");
     $(".captchaButton").click();
     var redBooking = setInterval(function() {
