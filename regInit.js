@@ -54,7 +54,7 @@ function statusRed() {
           clearInterval(redBooking);
         });
       }
-    }, 1000);
+    }, 5000);
   }
 }
 
