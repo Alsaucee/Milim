@@ -9,6 +9,7 @@ var interval = setInterval(function() {
     console.log("Starting execution..");
     console.clear();
     statusRed();
+    decideCaptcha(14, 59, 50);
     refreshOnTime(00, 58, 02);
     registerOnTime(13, 59, 54, 5);
     registerOnTime(13, 59, 56, 5);
@@ -33,7 +34,9 @@ var red = true;
 var waitReg = true;
 var lateReg = false;
 var recordMore = true;
+var response = null;
 var snapshot = null;
+var reCaptchaToken = null;
 var shift = 1;
 var successTime = "";
 
@@ -42,7 +45,7 @@ function statusRed() {
   var now = new Date();
   if (
     (now.getHours() == 14 && now.getMinutes() >= 15) ||
-    now.getHours() >= 15 && red == true
+    (now.getHours() >= 15 && red == true)
   ) {
     window.red = false;
     console.log("STARTED SOLVING CAPTCHA");
@@ -55,6 +58,58 @@ function statusRed() {
         });
       }
     }, 5000);
+  }
+}
+
+function decideCaptcha(hours, minutes, seconds) {
+  var decideCap = function() {
+    (function loop() {
+      var now = new Date();
+      if (
+        now.getHours() === hours &&
+        now.getMinutes() === minutes &&
+        now.getSeconds() === seconds
+      ) {
+        if (grecaptcha.getResponse() != "") {
+          sendCaptcha();
+        } else {
+          sleep(2500).then(() => {
+            getCaptcha();
+          });
+        }
+      }
+      now = new Date();
+      var delay = 999 - (now % 999);
+      setTimeout(loop, delay);
+    })();
+  };
+  decideCap();
+}
+
+function sendCaptcha() {
+  if (grecaptcha.getResponse() != "") {
+    console.log("SENDING CAPTCHA");
+    window.reCaptchaToken = grecaptcha.getResponse();
+    firebase
+      .database()
+      .ref("CAPTCHAs/" + browserID)
+      .set({
+        CaptchaToken: reCaptchaToken
+      });
+  }
+}
+
+function getCaptcha() {
+  if (reCaptchaToken == null) {
+    console.log("RECEIVING CAPTCHA");
+    firebase
+      .database()
+      .ref("CAPTCHAs/" + browserID + "/CaptchaToken")
+      .once("value")
+      .then(function(captchaKey) {
+        window.reCaptchaToken = captchaKey.val();
+      });
+    console.log(reCaptchaToken);
   }
 }
 
@@ -156,6 +211,7 @@ function refreshOnTime(hours, minutes, seconds) {
 }
 
 function registerOnTime(hours, minutes, seconds, tries) {
+  console.log("SCHEDULED EXECUTION AT" + hours + ":" + minutes + ":" + seconds);
   const f = function() {
     (function loop() {
       var now = new Date();
@@ -190,70 +246,6 @@ function generate_random_data1(size) {
   return random_data.join("");
 }
 
-function lateRegister(count) {
-  try {
-    if (officeNum == "194") {
-      shift = 2;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-
-  var response = grecaptcha.getResponse();
-  var counter = 0;
-  while (counter < count && recordMore == true) {
-    jQuery.ajax({
-      timeout: 10000,
-      url: "https://reg.nid-moi.gov.iq/reg",
-      method: "post",
-      data: {
-        name: name,
-        phone: pnum,
-        fNum: faNum,
-        office: officeNum,
-        shift: shift,
-        bookNo: bookNum,
-        clientId: clid,
-        captcha: response
-      },
-      crossDomain: true,
-      success: function(results) {
-        if (results.success == true) {
-          window.lateReg = true;
-          var now = new Date();
-          window.recordMore = false;
-          window.successTime =
-            now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
-          $.extend(data, results);
-          console.log(data);
-          addRecordToFirebase();
-          addToFirebase_S();
-        } else {
-          console.log(results);
-          if (
-            results.errNo == 4 ||
-            results.errNo == 8 ||
-            (results.errNo == 7 && recordMore == true)
-          ) {
-            window.recordMore = false;
-            window.status = "critical";
-            window.theError = JSON.stringify(results.msg);
-            addToFirebase_F();
-          } else if (results.errNo == 2) {
-            window.recordMore = false;
-          }
-        }
-      },
-      error: function(xhr, status, errorText) {
-        console.log(xhr);
-        console.log(status);
-        console.log(errorText);
-      }
-    });
-    counter = counter + 1;
-  }
-}
-
 function register(count) {
   try {
     if (officeNum == "194") {
@@ -262,8 +254,12 @@ function register(count) {
   } catch (error) {
     console.log(error);
   }
+  if (grecaptcha.getResponse() != "") {
+    response = grecaptcha.getResponse();
+  } else {
+    response = reCaptchaToken;
+  }
 
-  var response = grecaptcha.getResponse();
   var counter = 0;
   while (counter < count && recordMore == true) {
     jQuery.ajax({
