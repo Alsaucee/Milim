@@ -9,7 +9,7 @@ var interval = setInterval(function() {
     console.log("Starting execution..");
     console.clear();
     statusRed();
-    decideCaptcha(14, 59, 50);
+    decideCaptcha(13, 59, 50);
     refreshOnTime(00, 58, 02);
     registerOnTime(13, 59, 54, 5);
     registerOnTime(13, 59, 56, 5);
