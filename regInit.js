@@ -10,12 +10,21 @@ var interval = setInterval(function() {
     console.clear();
     statusRed();
     decideCaptcha(13, 59, 50);
-    registerOnTime(13, 59, 56, 5);
-    registerOnTime(13, 59, 57, 5);
-    registerOnTime(13, 59, 58, 5);
-    registerOnTime(13, 59, 59, 10);
-    registerOnTime(14, 00, 00, 10);
-    registerOnTime(14, 00, 05, 5);
+    registerOnTime(13, 59, 52, 1);
+    registerOnTime(13, 59, 54, 1);
+    registerOnTime(13, 59, 55, 1);
+    registerOnTime(13, 59, 56, 1);
+    registerOnTime(13, 59, 57, 1);
+    registerOnTime(13, 59, 58, 1);
+    registerOnTime(13, 59, 59, 1);
+    registerOnTime(14, 00, 00, 1);
+    registerOnTime(14, 00, 01, 1);
+    registerOnTime(14, 00, 03, 1);
+    registerOnTime(14, 00, 04, 1);
+    registerOnTime(14, 00, 06, 1);
+    registerOnTime(14, 00, 08, 1);
+    registerOnTime(14, 00, 10, 1);
+    registerOnTime(14, 00, 12, 1);
     sleep(5000).then(() => {
       hasRegLoaded();
     });
@@ -209,7 +218,7 @@ function refreshOnTime(hours, minutes, seconds) {
 }
 
 function registerOnTime(hours, minutes, seconds, tries) {
-  console.log("SCHEDULED EXECUTION AT" + hours + ":" + minutes + ":" + seconds);
+  console.log("SCHEDULED EXECUTION AT " + hours + ":" + minutes + ":" + seconds);
   const f = function() {
     (function loop() {
       var now = new Date();
