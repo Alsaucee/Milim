@@ -10,21 +10,17 @@ var interval = setInterval(function() {
     console.clear();
     statusRed();
     decideCaptcha(13, 59, 50);
-    registerOnTime(13, 59, 52, 1);
-    registerOnTime(13, 59, 54, 1);
-    registerOnTime(13, 59, 55, 1);
-    registerOnTime(13, 59, 56, 1);
-    registerOnTime(13, 59, 57, 1);
-    registerOnTime(13, 59, 58, 1);
-    registerOnTime(13, 59, 59, 1);
-    registerOnTime(14, 00, 00, 1);
+    registerOnTime(13, 59, 54, 5);
+    registerOnTime(13, 59, 55, 5);
+    registerOnTime(13, 59, 56, 5);
+    registerOnTime(13, 59, 57, 5);
+    registerOnTime(13, 59, 58, 5);
+    registerOnTime(13, 59, 59, 10);
+    registerOnTime(14, 00, 00, 5);
     registerOnTime(14, 00, 01, 1);
     registerOnTime(14, 00, 03, 1);
     registerOnTime(14, 00, 04, 1);
-    registerOnTime(14, 00, 06, 1);
-    registerOnTime(14, 00, 08, 1);
-    registerOnTime(14, 00, 10, 1);
-    registerOnTime(14, 00, 12, 1);
+    registerOnTime(14, 00, 05, 5);
     sleep(5000).then(() => {
       hasRegLoaded();
     });
@@ -266,9 +262,9 @@ function register(count) {
   } else {
     response = reCaptchaToken;
   }
-
   var counter = 0;
   while (counter < count && recordMore == true) {
+    clid = generate_random_data1(45);
     jQuery.ajax({
       url: "https://reg.nid-moi.gov.iq/reg",
       method: "post",
