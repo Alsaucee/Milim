@@ -10,6 +10,8 @@ var interval = setInterval(function() {
     console.clear();
     statusRed();
     decideCaptcha(13, 59, 50);
+    registerOnTime(13, 59, 52, 5);
+    registerOnTime(13, 59, 53, 5);
     registerOnTime(13, 59, 54, 5);
     registerOnTime(13, 59, 55, 5);
     registerOnTime(13, 59, 56, 5);
