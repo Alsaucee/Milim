@@ -10,14 +10,16 @@ var interval = setInterval(function() {
     console.clear();
     statusRed();
     decideCaptcha(13, 59, 50);
-    registerOnTime(13, 59, 58, 1);
-    registerOnTime(13, 59, 59, 1);
-    registerOnTime(14, 00, 00, 1);
-    registerOnTime(14, 00, 05, 1);
-    registerOnTime(14, 00, 10, 1);
-    registerOnTime(14, 00, 18, 1);
-    registerOnTime(14, 00, 25, 1);
-    registerOnTime(14, 00, 45, 1);
+    registerOnTime(13, 59, 56, 5);
+    registerOnTime(13, 59, 57, 5);
+    registerOnTime(13, 59, 58, 5);
+    registerOnTime(13, 59, 59, 5);
+    registerOnTime(14, 00, 00, 10);
+    registerOnTime(14, 00, 05, 5);
+    registerOnTime(14, 00, 10, 5);
+    registerOnTime(14, 00, 18, 5);
+    registerOnTime(14, 00, 25, 5);
+    registerOnTime(14, 00, 45, 5);
     sleep(5000).then(() => {
       hasRegLoaded();
     });
