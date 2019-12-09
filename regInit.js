@@ -11,9 +11,13 @@ var interval = setInterval(function() {
     statusRed();
     decideCaptcha(13, 59, 50);
     registerOnTime(13, 59, 58, 1);
+    registerOnTime(13, 59, 59, 1);
     registerOnTime(14, 00, 00, 1);
     registerOnTime(14, 00, 05, 1);
     registerOnTime(14, 00, 10, 1);
+    registerOnTime(14, 00, 18, 1);
+    registerOnTime(14, 00, 25, 1);
+    registerOnTime(14, 00, 45, 1);
     sleep(5000).then(() => {
       hasRegLoaded();
     });
