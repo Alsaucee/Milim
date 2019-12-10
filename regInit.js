@@ -15,11 +15,19 @@ var interval = setInterval(function() {
     registerOnTime(13, 59, 58, 5);
     registerOnTime(13, 59, 59, 5);
     registerOnTime(14, 00, 00, 10);
+    registerOnTime(14, 00, 01, 5);
+    registerOnTime(14, 00, 02, 5);
     registerOnTime(14, 00, 05, 5);
     registerOnTime(14, 00, 10, 5);
-    registerOnTime(14, 00, 18, 5);
-    registerOnTime(14, 00, 25, 5);
+    registerOnTime(14, 00, 16, 5);
+    registerOnTime(14, 00, 21, 10);
+    registerOnTime(14, 00, 27, 5);
+    registerOnTime(14, 00, 32, 5);
+    registerOnTime(14, 00, 40, 5);
     registerOnTime(14, 00, 45, 5);
+    registerOnTime(14, 00, 52, 5);
+    registerOnTime(14, 00, 58, 5);
+    registerOnTime(14, 01, 05, 5);
     sleep(5000).then(() => {
       hasRegLoaded();
     });
